@@ -1,52 +1,51 @@
-# 🎙️ GoGetPodcast — Analytics Dashboard
+# GoGetPodcast — Analytics Dashboard
 
-Интерактивный дашборд для визуализации статистики выпусков подкаста
-[GoGetPodcast](https://gogetpodcast.ru). Кто сколько говорил, какие
-книги рекомендовали, о чём спорили — в цифрах и графиках.
+Interactive dashboard for visualizing episode statistics of the
+[GoGetPodcast](https://gogetpodcast.ru) — a Russian-language podcast
+about software engineering. Who talked the most, which books were
+recommended, what topics sparked debate — all in charts and numbers.
 
-**[→ Открыть дашборд](https://justskiv.github.io/ggp-stats/)**
+**[→ Live Demo](https://justskiv.github.io/ggp-stats/)**
 
-## Возможности
+## Features
 
-- 📊 **Обзор** — распределение эфира между спикерами (по словам,
-  времени, репликам)
-- 🗣 **Спикеры** — радар активности, детальная статистика каждого
-  участника
-- 📋 **Темы** — таймлайн обсуждений, топ тем по длительности
-- 📚 **Ресурсы** — упомянутые книги, курсы, платформы и технологии
-- 🎉 **Fun Facts** — забавные моменты, упомянутые персоны, сводка
-  в цифрах
+- **Overview** — airtime distribution across speakers (by words,
+  time, utterances)
+- **Speakers** — activity radar, detailed per-speaker stats
+- **Topics** — discussion timeline, top topics by duration
+- **Resources** — mentioned books, courses, platforms, and
+  technologies
+- **Fun Facts** — memorable moments, mentioned people, quick stats
 
-## Стек
+## Tech Stack
 
-- **React 18** + **Recharts** — подключены через CDN, без системы
-  сборки
-- **SPA** с hash-роутингом — главная страница со списком выпусков,
-  переход к дашборду конкретного выпуска
-- Тёмная тема, адаптивная вёрстка
+- **React 18** + **Recharts** via CDN — zero build step
+- **SPA** with hash routing — episode list + per-episode dashboard
+- Dark theme, responsive layout
 
-## Структура
+## Project Structure
 
 ```
-index.html              SPA: роутинг, список выпусков, дашборд
+index.html              SPA: routing, episode list, dashboard
 episodes/
-  index.js              Реестр эпизодов (метаданные для списка)
+  index.js              Episode registry (metadata for the list)
   ep21/
-    data.js             Данные выпуска #21
+    data.js             Episode #21 data
 ```
 
-## Добавление нового выпуска
+## Adding a New Episode
 
-1. Создать `episodes/epNN/data.js` по образцу `episodes/ep21/data.js`
-2. Добавить запись в `episodes/index.js`
+1. Create `episodes/epNN/data.js` following `episodes/ep21/data.js`
+   format
+2. Add an entry to `episodes/index.js`
 
-## Локальный запуск
+## Local Development
 
 ```bash
 python3 -m http.server 8000
 # → http://localhost:8000
 ```
 
-## Лицензия
+## License
 
 MIT
