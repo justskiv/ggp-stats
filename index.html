@@ -21,6 +21,11 @@
   @keyframes spin { to { transform: rotate(360deg); } }
   .ep-card { transition: transform 0.15s, box-shadow 0.15s; }
   .ep-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+  .res-card { transition: background 0.15s; }
+  .res-card:hover { background: #1e293b !important; }
+  .res-search { transition: border-color 0.15s; }
+  .res-search::placeholder { color: #475569; }
+  .res-search:focus { border-color: #6366f1 !important; }
   @media (max-width: 768px) {
     .grid-2 { grid-template-columns: 1fr !important; }
     .grid-3 { grid-template-columns: 1fr !important; }
@@ -196,11 +201,24 @@ const dashTabs = [
 function Dashboard({ data }) {
   const [tab, setTab] = useState("overview");
   const [metric, setMetric] = useState("words");
+  const [resCat, setResCat] = useState("all");
+  const [resSpeaker, setResSpeaker] = useState("all");
+  const [resSearch, setResSearch] = useState("");
 
   const d = data;
   const C = d.colors;
   const speakers = d.speakers;
   const totalUtt = speakers.reduce((s, x) => s + x.utt, 0);
+
+  // Resource filtering & grouping
+  const _cg = { books: { l: "📖 Книги", c: ["cs","os","db","algo","code","biz","sci"] }, course: { l: "🎓 Курсы", c: ["course"] }, platform: { l: "🌐 Платформы", c: ["platform"] }, article: { l: "📝 Статьи", c: ["article"] }, ai: { l: "🤖 AI", c: ["ai"] }, tool: { l: "🔧 Инструменты", c: ["tool"] } };
+  const _go = ["books","course","platform","article","ai","tool"];
+  const _ms = (w, s) => s === "all" || w === "Все" || w.split(",").map(x => x.trim()).includes(s);
+  const filtRes = (d.resources || []).filter(r => (resCat === "all" || (_cg[resCat] && _cg[resCat].c.includes(r.cat))) && _ms(r.w, resSpeaker) && (!resSearch || r.t.toLowerCase().includes(resSearch.toLowerCase())));
+  const _ac = new Set(Object.values(_cg).flatMap(g => g.c));
+  const resGrps = _go.map(k => [k, _cg[k].l, filtRes.filter(r => _cg[k].c.includes(r.cat))]).filter(g => g[2].length > 0);
+  const _uc = filtRes.filter(r => !r.cat || !_ac.has(r.cat));
+  if (_uc.length > 0) resGrps.push(["other", "📦 Прочее", _uc]);
 
   useEffect(() => { document.title = d.meta.title + " — Dashboard"; }, [d]);
 
@@ -383,56 +401,53 @@ function Dashboard({ data }) {
 
         // ===== RESOURCES =====
         tab === "resources" && React.createElement(React.Fragment, null,
-          React.createElement("div", { className: "grid-2", style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: 20 } },
-            React.createElement(Card, null,
-              React.createElement("h3", { style: { fontSize: 15, fontWeight: 700, marginBottom: 12 } }, "Ресурсы по типу"),
-              React.createElement(ResponsiveContainer, { width: "100%", height: 220 },
-                React.createElement(PieChart, null,
-                  React.createElement(Pie, { data: d.resourcesByType, cx: "50%", cy: "50%", outerRadius: 85, dataKey: "value", label: ({name, value}) => name + ": " + value, labelLine: { stroke: "#475569" }, strokeWidth: 2, stroke: "#0f172a" },
-                    ...d.resourcesByType.map((r, i) => React.createElement(Cell, { key: i, fill: r.fill })),
-                  ),
-                  React.createElement(Tooltip, { content: React.createElement(Tip) }),
-                ),
-              ),
-            ),
-            React.createElement(Card, null,
-              React.createElement("h3", { style: { fontSize: 15, fontWeight: 700, marginBottom: 12 } }, "Кто упомянул больше ресурсов"),
-              React.createElement(ResponsiveContainer, { width: "100%", height: 220 },
-                React.createElement(BarChart, { data: d.resourcesBySpeaker },
-                  React.createElement(CartesianGrid, { strokeDasharray: "3 3", stroke: "#334155" }),
-                  React.createElement(XAxis, { dataKey: "name", tick: { fill: "#94a3b8", fontSize: 12 } }),
-                  React.createElement(YAxis, { tick: { fill: "#94a3b8", fontSize: 11 } }),
-                  React.createElement(Tooltip, { content: React.createElement(Tip) }),
-                  React.createElement(Bar, { dataKey: "count", name: "Ресурсов", fill: "#6366f1", radius: [6,6,0,0] },
-                    ...speakerColors.map((f, i) => React.createElement(Cell, { key: i, fill: f })),
-                  ),
-                ),
-              ),
-            ),
+          // Search
+          React.createElement("input", {
+            type: "text", className: "res-search", placeholder: "Поиск...", value: resSearch,
+            onChange: (e) => setResSearch(e.target.value),
+            style: { width: "100%", padding: "10px 16px", borderRadius: 10, border: "1px solid #334155", background: "#1e293b", color: "#e2e8f0", fontSize: 14, outline: "none", marginBottom: 16 }
+          }),
+          // Filters
+          React.createElement("div", { style: { display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 20, alignItems: "center" } },
+            React.createElement("button", { onClick: () => setResCat("all"), style: { padding: "5px 14px", borderRadius: 20, border: "none", cursor: "pointer", fontSize: 12, fontWeight: 600, background: resCat === "all" ? "#6366f1" : "#334155", color: resCat === "all" ? "#fff" : "#94a3b8" } }, "Все"),
+            ..._go.map(gk => {
+              if (!(d.resources || []).some(r => _cg[gk].c.includes(r.cat))) return null;
+              return React.createElement("button", { key: gk, onClick: () => setResCat(resCat === gk ? "all" : gk), style: { padding: "5px 14px", borderRadius: 20, border: "none", cursor: "pointer", fontSize: 12, fontWeight: resCat === gk ? 600 : 400, background: resCat === gk ? "#6366f1" : "#334155", color: resCat === gk ? "#fff" : "#94a3b8" } }, _cg[gk].l);
+            }).filter(Boolean),
+            React.createElement("div", { style: { width: 1, height: 20, background: "#334155", margin: "0 4px" } }),
+            ...speakers.map(s => React.createElement("button", { key: s.name, onClick: () => setResSpeaker(resSpeaker === s.name ? "all" : s.name), style: { padding: "5px 14px", borderRadius: 20, border: "none", cursor: "pointer", fontSize: 12, fontWeight: resSpeaker === s.name ? 600 : 400, background: resSpeaker === s.name ? s.color : "#334155", color: resSpeaker === s.name ? "#fff" : "#94a3b8" } }, s.name)),
           ),
-          React.createElement(Card, { style: { marginBottom: 20 } },
-            React.createElement("h3", { style: { fontSize: 15, fontWeight: 700, marginBottom: 12 } }, "Технологии и инструменты"),
-            React.createElement(ResponsiveContainer, { width: "100%", height: 200 },
-              React.createElement(BarChart, { data: d.techData },
-                React.createElement(CartesianGrid, { strokeDasharray: "3 3", stroke: "#334155" }),
-                React.createElement(XAxis, { dataKey: "name", tick: { fill: "#94a3b8", fontSize: 11 } }),
-                React.createElement(YAxis, { tick: { fill: "#94a3b8", fontSize: 11 } }),
-                React.createElement(Tooltip, { content: React.createElement(Tip) }),
-                React.createElement(Bar, { dataKey: "v", name: "Упоминаний", fill: "#a5b4fc", radius: [4,4,0,0] }),
+          // Counter
+          filtRes.length < (d.resources || []).length && React.createElement("div", { style: { fontSize: 12, color: "#64748b", marginBottom: 12 } }, "Найдено: " + filtRes.length + " из " + d.resources.length),
+          // Grouped resources
+          ...resGrps.map(([gk, label, items]) =>
+            React.createElement("div", { key: gk, style: { marginBottom: 24 } },
+              React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8, marginBottom: 10 } },
+                React.createElement("span", { style: { fontSize: 14, fontWeight: 700, color: "#e2e8f0" } }, label),
+                React.createElement("span", { style: { fontSize: 12, color: "#475569" } }, "(" + items.length + ")"),
+                React.createElement("div", { style: { flex: 1, height: 1, background: "#1e293b" } }),
               ),
-            ),
-          ),
-          React.createElement(Card, null,
-            React.createElement("h3", { style: { fontSize: 15, fontWeight: 700, marginBottom: 16 } }, "Все упомянутые ресурсы (" + d.resources.length + ")"),
-            React.createElement("div", { className: "res-grid", style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 } },
-              ...d.resources.map((r, i) => React.createElement("div", { key: i, style: { display: "flex", alignItems: "center", gap: 10, padding: "8px 12px", background: "#0f172a", borderRadius: 8, fontSize: 13 } },
-                React.createElement("span", { style: { fontSize: 16 } }, r.tp),
-                React.createElement("div", { style: { flex: 1 } },
-                  React.createElement("div", { style: { fontWeight: 600, color: "#f1f5f9" } }, r.t),
-                  React.createElement("div", { style: { fontSize: 11, color: "#64748b" } }, r.w),
+              React.createElement("div", { className: "res-grid", style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 } },
+                ...items.map((r, i) =>
+                  React.createElement("div", { key: i, className: "res-card", style: { background: "#0f172a", borderRadius: 10, padding: "12px 16px" } },
+                    React.createElement("div", { style: { display: "flex", alignItems: "flex-start", gap: 10 } },
+                      r.icon ? React.createElement("img", { src: "assets/icons/" + r.icon, style: { width: 20, height: 20, flexShrink: 0, borderRadius: 4, objectFit: "contain" } }) : React.createElement("span", { style: { fontSize: 16, flexShrink: 0, lineHeight: "20px" } }, r.tp),
+                      React.createElement("div", { style: { flex: 1, minWidth: 0 } },
+                        React.createElement("div", { style: { fontWeight: 600, fontSize: 13, color: "#f1f5f9" } }, r.t),
+                        r.desc && React.createElement("div", { style: { fontSize: 13, color: "#94a3b8", lineHeight: 1.5, marginTop: 3 } }, r.desc),
+                        React.createElement("div", { style: { fontSize: 11, color: "#64748b", marginTop: 3 } }, r.w),
+                      ),
+                      r.url && React.createElement("a", { href: r.url, target: "_blank", rel: "noopener noreferrer", style: { display: "flex", alignItems: "center", justifyContent: "center", width: 36, height: 36, borderRadius: 8, background: "rgba(99,102,241,0.12)", color: "#a5b4fc", textDecoration: "none", fontSize: 14, flexShrink: 0 } }, "↗"),
+                    ),
+                  )
                 ),
-              )),
-            ),
+              ),
+            )
+          ),
+          // Empty state
+          resGrps.length === 0 && React.createElement("div", { style: { textAlign: "center", padding: "48px 0", color: "#475569" } },
+            React.createElement("div", { style: { fontSize: 32, marginBottom: 8 } }, "🔍"),
+            React.createElement("div", { style: { fontSize: 14 } }, "Ничего не найдено"),
           ),
         ),
 

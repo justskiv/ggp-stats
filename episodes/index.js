@@ -1,6 +1,20 @@
 window.GGP_EPISODES = window.GGP_EPISODES || {};
 window.GGP_EPISODES._registry = [
   {
+    id: "ep20",
+    number: 20,
+    title: "Обучение программированию — юбилейный выпуск",
+    date: "2024-11-24",
+    duration: "3ч 33м",
+    totalWords: 32100,
+    totalUtterances: 478,
+    totalResources: 38,
+    speakerNames: ["Николай Тузов", "Глеб", "Алексей Акулович"],
+    speakerColors: ["#6366f1", "#f59e0b", "#10b981"],
+    description: "Глеб (PixelStorm) и Алексей Акулович обсуждают стратегии обучения, Go, алгоритмы и книги",
+    tags: ["Go", "обучение", "алгоритмы", "книги", "хакатоны"],
+  },
+  {
     id: "ep21",
     number: 21,
     title: "Обучение программированию — с новыми людьми",
@@ -8,7 +22,7 @@ window.GGP_EPISODES._registry = [
     duration: "2ч 56м",
     totalWords: 12200,
     totalUtterances: 303,
-    totalResources: 35,
+    totalResources: 71,
     speakerNames: ["Николай Тузов", "Кирилл Мокевнин", "Влад"],
     speakerColors: ["#6366f1", "#f59e0b", "#10b981"],
     description: "Кирилл Мокевнин (Hexlet) и Влад обсуждают SICP, A-players, фундаментальное образование и роль ИИ",
