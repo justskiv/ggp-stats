@@ -23,7 +23,7 @@ window.GGP_EPISODES._registry = [
     totalWords: 12200,
     totalUtterances: 303,
     totalResources: 72,
-    speakerNames: ["Николай Тузов", "Кирилл Мокевнин", "Влад"],
+    speakerNames: ["Николай Тузов", "Кирилл Мокевнин", "Влад Тен"],
     speakerColors: ["#6366f1", "#f59e0b", "#10b981"],
     description: "Кирилл Мокевнин (Hexlet) и Влад обсуждают SICP, A-players, фундаментальное образование и роль ИИ",
     tags: ["образование", "SICP", "Hexlet", "книги", "ИИ"],

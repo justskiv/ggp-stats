@@ -59,7 +59,13 @@ export function SpeakersTab({ data }) {
 
       <${Card} style=${{ marginTop: 20, borderLeft: "4px solid " + keyInsight.color }}>
         <h4 style=${{ margin: "0 0 8px", fontSize: 14, color: keyInsight.color }}>📊 Ключевой инсайт</h4>
-        <p style=${{ margin: 0, fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.6 }} dangerouslySetInnerHTML=${{ __html: keyInsight.html }} />
+        <p style=${{ margin: 0, fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.6 }}>
+          ${keyInsight.parts.map(([bold, text], i) =>
+            bold
+              ? html`<strong key=${i} style=${{ color: "var(--text-bright)" }}>${text}</strong>`
+              : text
+          )}
+        </p>
       <//>
     <//>`;
 }

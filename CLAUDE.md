@@ -3,79 +3,102 @@
 ## Описание проекта
 
 SPA-дашборд для визуализации статистики выпусков подкаста GoGetPodcast.
-Построен на React + Recharts, работает без системы сборки через CDN.
+Построен на React + Recharts + HTM, работает без системы сборки через CDN.
 Поддерживает несколько выпусков с общим кодом дашборда и отдельными
 файлами данных.
 
 ## Структура проекта
 
 ```
-index.html                     # SPA: роутинг, список выпусков, дашборд
+index.html                         # Shell: CDN imports, <div id=root>, module entry
+styles.css                         # CSS custom properties + classes
+src/
+  lib.js                           # HTM binding + re-export React/Recharts
+  hooks.js                         # useRoute, useEpisodeData
+  utils.js                         # pluralize
+  constants.js                     # DASH_TABS, CATEGORY_GROUPS, GROUP_ORDER
+  main.js                          # App + ReactDOM.createRoot
+  components/
+    shared.js                      # Tip, PieLabel, Card, LoadingScreen, ErrorScreen
+    EpisodeCard.js                 # Episode card for list page
+    EpisodeList.js                 # Main listing page
+    EpisodeView.js                 # Episode loader wrapper
+    Dashboard.js                   # Dashboard shell: header, tabs, routing
+    tabs/
+      OverviewTab.js               # Pie/bar charts, speaker summary
+      SpeakersTab.js               # Radar chart, speaker cards, key insight
+      TopicsTab.js                 # Timeline, top topics bar chart
+      ResourcesTab.js              # Resource catalog with filters
+      FunFactsTab.js               # Fun facts, persons, quick stats
 episodes/
-  index.js                     # Реестр эпизодов (метаданные для списка)
-  ep20/
-    data.js                    # Данные выпуска #20
-  ep21/
-    data.js                    # Данные выпуска #21
+  index.js                         # Episode registry (lightweight list metadata)
+  ep20/data.js                     # Episode #20 full data
+  ep21/data.js                     # Episode #21 full data
 assets/
-  icons/                       # Иконки для ресурсов (claude.png, codex.png)
-gogetpodcast-dashboard.jsx     # JSX-версия (для сборки, не используется)
+  icons/                           # Resource icons (claude.png, codex.png)
 ```
 
 ## Стек
 
-- React 18.2.0 (CDN)
-- Recharts 2.12.7 (CDN)
-- Чистый CSS (inline + `<style>`, тёмная тема)
-- Hash-роутинг (`#/` — список, `#/ep21` — дашборд)
+- React 18.2.0 (CDN, UMD)
+- Recharts 2.12.7 (CDN, UMD)
+- HTM 3.1.1 (ESM from esm.sh) — JSX-like tagged templates
+- ES Modules (`<script type="module">`)
+- CSS custom properties (dark theme)
+- Hash-routing (`#/` — list, `#/ep21` — dashboard, `#/ep21/resources` — tab)
 
 ## Запуск
 
 ```bash
-# Через локальный сервер (рекомендуется, нужен для загрузки data.js)
 python3 -m http.server 8000
 ```
 
 ## Табы дашборда
 
-- **Обзор** — пай-чарт распределения (слова/время/реплики), барчарт сравнения
-- **Спикеры** — радар активности, карточки с детальными метриками, ключевой инсайт
-- **Темы** — таймлайн тем, топ тем по длительности (горизонтальный барчарт)
-- **Ресурсы** — каталог с группировкой по категориям (книги, курсы, платформы, статьи, AI, инструменты), фильтрация по категории/спикеру, поиск, сворачивание групп
-- **Fun Facts** — забавные факты, упомянутые персоны, блок «В цифрах»
+- **Обзор** — pie chart (слова/время/реплики), bar chart сравнения
+- **Спикеры** — radar chart, карточки с метриками, key insight
+- **Темы** — timeline тем, top topics bar chart
+- **Ресурсы** — каталог с фильтрами (категория/спикер/поиск), группировка, сворачивание
+- **Fun Facts** — факты, персоны, «В цифрах»
 
 ## Добавление нового выпуска
 
-1. Создать папку `episodes/epNN/`
-2. Создать `episodes/epNN/data.js` по образцу `episodes/ep21/data.js`
+1. Создать `episodes/epNN/data.js` по образцу `episodes/ep21/data.js`
    — формат: `window.GGP_EPISODES["epNN"] = { meta, speakers, ... }`
-3. Добавить запись в `episodes/index.js` в массив `_registry`
+2. Добавить запись в `episodes/index.js` в массив `_registry`
+
+## Добавление нового таба
+
+1. Создать `src/components/tabs/NewTab.js`
+2. Добавить в `DASH_TABS` в `src/constants.js`
+3. Добавить в `TAB_COMPONENTS` в `src/components/Dashboard.js`
 
 ## Формат данных выпуска (`data.js`)
 
-Ключи объекта:
 - `meta` — id, number, title, subtitle, durationMinutes
-- `headerStats` — массив `[emoji, value, label]` для шапки
-- `colors` — цвета спикеров (ключи: n, k, v)
-- `speakers` — массив спикеров (name, full, role, words, pct, time, timePct, utt, avgW, maxW, maxTopic, color)
-- `radarData` — данные для радара `{ m, n, k, v }`
-- `barData` — данные для барчарта
-- `topics` — массив тем `{ t, s, d, c }` (название, старт мин, длительность мин, цвет)
-- `resources` — массив ресурсов `{ t, cat, w, tp, desc?, url?, icon? }`
-- `keyInsight` — `{ color, html }`
-- `funFacts` — массив `{ i, t }` (эмодзи, текст)
+- `headerStats` — массив `[emoji, value, label]`
+- `colors` — цвета спикеров (ключи совпадают с dataKey в barData/radarData)
+- `speakers` — массив (name, full, role, words, pct, time, timePct, utt, avgW, maxW, color)
+- `radarData` — `{ m, <speakerKey>... }`
+- `barData` — `{ m, <speakerKey>... }`
+- `topics` — `{ t, s, d, c }` (title, start min, duration min, color)
+- `resources` — `{ t, cat, w, tp, desc?, url?, icon? }`
+- `keyInsight` — `{ color, parts: [[bold, text], ...] }`
+- `funFacts` — `{ i, t }` (emoji, text)
 - `persons` — массив строк
-- `quickStats` — массив `[value, label, sublabel]`
+- `quickStats` — `[value, label, sublabel]`
 
 ## Категории ресурсов
 
-Группы: `books` (cs, os, db, algo, code, biz, sci), `course`, `platform`, `article`, `ai`, `tool`
+Определены в `src/constants.js`:
+`books` (cs, os, db, algo, code, biz, sci), `course`, `platform`, `article`, `ai`, `tool`
 
 ## Соглашения
 
-- Проект без системы сборки — все зависимости подключены через CDN
-- В `index.html` используется `React.createElement()` вместо JSX
-- Данные выпусков хранятся в `episodes/epNN/data.js`
-- Код дашборда общий, данные подставляются из файла выпуска
-- Иконки ресурсов хранятся в `assets/icons/`, подключаются через поле `icon` в ресурсе
-- Язык интерфейса — русский
+- Без системы сборки — CDN + ES Modules
+- HTM tagged templates вместо React.createElement
+- CSS custom properties для цветов, радиусов, отступов
+- Данные выпусков в `episodes/epNN/data.js`, загружаются lazy через script injection
+- Registry (`episodes/index.js`) — preview-индекс для списка, не дублировать вычислимые поля
+- Иконки ресурсов в `assets/icons/`, подключаются через поле `icon`
+- Язык интерфейса — русский, код и комментарии — английский
