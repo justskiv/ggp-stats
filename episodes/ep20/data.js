@@ -110,39 +110,6 @@ window.GGP_EPISODES["ep20"] = {
     { t: "Turbo Pascal / Assembler", w: "Глеб", tp: "🔧", cat: "tool", desc: "Среда разработки Borland. Глеб начинал программировать с неё в 1987." },
   ],
 
-  resourceCategories: {
-    cs: "Фундаментальные CS",
-    os: "Операционные системы",
-    algo: "Алгоритмы",
-    code: "Код и архитектура",
-    sci: "Наука и научпоп",
-    course: "Курсы",
-    article: "Статьи и документация",
-    platform: "Платформы",
-    ai: "AI-инструменты",
-    tool: "Инструменты",
-  },
-
-  techData: [
-    { name: "Go", v: 45 }, { name: "Pascal", v: 5 }, { name: "K8s", v: 4 },
-    { name: "PHP", v: 3 }, { name: "LLM", v: 3 }, { name: "C++", v: 2 },
-    { name: "Python", v: 2 }, { name: "Rust", v: 2 }, { name: "VB", v: 2 },
-    { name: "Linux", v: 2 }, { name: "JS", v: 1 }, { name: "Vim", v: 1 },
-  ],
-
-  resourcesByType: [
-    { name: "Книги", value: 16, fill: "#6366f1" },
-    { name: "Документация Go", value: 8, fill: "#10b981" },
-    { name: "Платформы", value: 8, fill: "#f59e0b" },
-    { name: "Другое", value: 6, fill: "#94a3b8" },
-  ],
-
-  resourcesBySpeaker: [
-    { name: "Николай", count: 19 },
-    { name: "Глеб", count: 12 },
-    { name: "Алексей", count: 10 },
-  ],
-
   funFacts: [
     { i: "💾", t: "Глеб программирует с 1987 года — начал на IBM PC с Turbo Pascal и ассемблером" },
     { i: "📖", t: "Глеб прочитал документацию к IBM PC три раза от корки до корки" },

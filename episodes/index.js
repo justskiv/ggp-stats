@@ -22,7 +22,7 @@ window.GGP_EPISODES._registry = [
     duration: "2ч 56м",
     totalWords: 12200,
     totalUtterances: 303,
-    totalResources: 71,
+    totalResources: 72,
     speakerNames: ["Николай Тузов", "Кирилл Мокевнин", "Влад"],
     speakerColors: ["#6366f1", "#f59e0b", "#10b981"],
     description: "Кирилл Мокевнин (Hexlet) и Влад обсуждают SICP, A-players, фундаментальное образование и роль ИИ",

@@ -142,45 +142,6 @@ window.GGP_EPISODES["ep21"] = {
     { t: "optimization.guide", w: "Николай", tp: "🌐", cat: "tool", desc: "Руководство по оптимизации производительности программ и систем." },
   ],
 
-  // Категории ресурсов (для будущей фильтрации)
-  resourceCategories: {
-    cs: "Фундаментальные CS",
-    os: "Операционные системы",
-    db: "Базы данных",
-    algo: "Алгоритмы",
-    code: "Код и архитектура",
-    biz: "Бизнес и менеджмент",
-    sci: "Наука и научпоп",
-    course: "Курсы",
-    platform: "Платформы",
-    article: "Статьи и доклады",
-    ai: "AI-инструменты",
-    tool: "Инструменты",
-  },
-
-  techData: [
-    { name: "PHP", v: 8 }, { name: "ChatGPT", v: 6 }, { name: "Go", v: 5 },
-    { name: "Linux", v: 5 }, { name: "Python", v: 4 }, { name: "Rust", v: 3 },
-    { name: "Ruby", v: 3 }, { name: "Vim", v: 3 }, { name: "K8s", v: 2 },
-    { name: "JS", v: 2 }, { name: "Claude", v: 2 }, { name: "Gemini", v: 2 },
-    { name: "Cursor", v: 2 }, { name: "Perplexity", v: 1 },
-  ],
-
-  resourcesByType: [
-    { name: "Книги", value: 35, fill: "#6366f1" },
-    { name: "Курсы", value: 7, fill: "#10b981" },
-    { name: "Платформы", value: 11, fill: "#f59e0b" },
-    { name: "Статьи", value: 7, fill: "#818cf8" },
-    { name: "AI", value: 8, fill: "#f472b6" },
-    { name: "Прочее", value: 3, fill: "#94a3b8" },
-  ],
-
-  resourcesBySpeaker: [
-    { name: "Кирилл", count: 36 },
-    { name: "Николай", count: 26 },
-    { name: "Влад", count: 13 },
-  ],
-
   funFacts: [
     { i: "😴", t: "Влад опоздал на 30 минут — перепутал день недели и спал в 7 вечера" },
     { i: "🍝", t: "Кирилл встретил PHP-легенду Диму Котерова на собеседовании в ресторане" },
