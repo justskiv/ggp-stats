@@ -47,8 +47,8 @@ const { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip
 function useRoute() {
   const parse = (hash) => {
     if (!hash || hash === "#" || hash === "#/") return { page: "list" };
-    const m = hash.match(/^#\/(.+)$/);
-    return m ? { page: "episode", id: m[1] } : { page: "list" };
+    const m = hash.match(/^#\/([^/]+)(?:\/([^/]+))?$/);
+    return m ? { page: "episode", id: m[1], tab: m[2] || null } : { page: "list" };
   };
   const [route, setRoute] = useState(parse(window.location.hash));
   useEffect(() => {
@@ -198,12 +198,15 @@ const dashTabs = [
   { id: "fun", label: "🎉 Fun Facts" },
 ];
 
-function Dashboard({ data }) {
-  const [tab, setTab] = useState("overview");
+function Dashboard({ data, routeTab }) {
+  const validTabs = dashTabs.map(t => t.id);
+  const tab = routeTab && validTabs.includes(routeTab) ? routeTab : "overview";
+  const setTab = (t) => { window.location.hash = "#/" + data.meta.id + (t === "overview" ? "" : "/" + t); };
   const [metric, setMetric] = useState("words");
   const [resCat, setResCat] = useState("all");
   const [resSpeaker, setResSpeaker] = useState("all");
   const [resSearch, setResSearch] = useState("");
+  const [resCol, setResCol] = useState(new Set());
 
   const d = data;
   const C = d.colors;
@@ -420,14 +423,19 @@ function Dashboard({ data }) {
           // Counter
           filtRes.length < (d.resources || []).length && React.createElement("div", { style: { fontSize: 12, color: "#64748b", marginBottom: 12 } }, "Найдено: " + filtRes.length + " из " + d.resources.length),
           // Grouped resources
-          ...resGrps.map(([gk, label, items]) =>
-            React.createElement("div", { key: gk, style: { marginBottom: 24 } },
-              React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 8, marginBottom: 10 } },
+          ...resGrps.map(([gk, label, items]) => {
+            const _col = resCat === "all" && resCol.has(gk);
+            return React.createElement("div", { key: gk, style: { marginBottom: 24 } },
+              React.createElement("div", {
+                onClick: resCat === "all" ? () => setResCol(prev => { const s = new Set(prev); s.has(gk) ? s.delete(gk) : s.add(gk); return s; }) : undefined,
+                style: { display: "flex", alignItems: "center", gap: 8, marginBottom: _col ? 0 : 10, cursor: resCat === "all" ? "pointer" : "default" }
+              },
+                resCat === "all" && React.createElement("span", { style: { fontSize: 10, color: "#475569", flexShrink: 0, transition: "transform 0.15s", transform: _col ? "rotate(-90deg)" : "rotate(0)" } }, "▼"),
                 React.createElement("span", { style: { fontSize: 14, fontWeight: 700, color: "#e2e8f0" } }, label),
                 React.createElement("span", { style: { fontSize: 12, color: "#475569" } }, "(" + items.length + ")"),
                 React.createElement("div", { style: { flex: 1, height: 1, background: "#1e293b" } }),
               ),
-              React.createElement("div", { className: "res-grid", style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 } },
+              !_col && React.createElement("div", { className: "res-grid", style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 } },
                 ...items.map((r, i) =>
                   React.createElement("div", { key: i, className: "res-card", style: { background: "#0f172a", borderRadius: 10, padding: "12px 16px" } },
                     React.createElement("div", { style: { display: "flex", alignItems: "flex-start", gap: 10 } },
@@ -442,8 +450,8 @@ function Dashboard({ data }) {
                   )
                 ),
               ),
-            )
-          ),
+            );
+          }),
           // Empty state
           resGrps.length === 0 && React.createElement("div", { style: { textAlign: "center", padding: "48px 0", color: "#475569" } },
             React.createElement("div", { style: { fontSize: 32, marginBottom: 8 } }, "🔍"),
@@ -488,18 +496,18 @@ function Dashboard({ data }) {
 
 // ===== EPISODE VIEW (loader wrapper) =====
 
-function EpisodeView({ id }) {
+function EpisodeView({ id, tab }) {
   const { loading, data, error } = useEpisodeData(id);
   if (loading || (!data && !error)) return React.createElement(LoadingScreen);
   if (error) return React.createElement(ErrorScreen, { id: id });
-  return React.createElement(Dashboard, { data: data });
+  return React.createElement(Dashboard, { data: data, routeTab: tab });
 }
 
 // ===== APP (router) =====
 
 function App() {
   const route = useRoute();
-  if (route.page === "episode") return React.createElement(EpisodeView, { id: route.id });
+  if (route.page === "episode") return React.createElement(EpisodeView, { id: route.id, tab: route.tab });
   return React.createElement(EpisodeList);
 }
 
