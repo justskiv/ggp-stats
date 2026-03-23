@@ -1,9 +1,12 @@
 import { html } from "../lib.js";
+import { usePlayer } from "./PlayerProvider.js";
+import { HeaderPlayer } from "./HeaderPlayer.js";
 
 const RSS_URL = "https://feeds.feedburner.com/gogetpodcast";
 
-export function Header({ playerState }) {
-  const hasPlayer = playerState !== null;
+export function Header() {
+  const player = usePlayer();
+  const hasPlayer = player.episodeId !== null;
 
   return html`
     <header className="gh">
@@ -14,7 +17,9 @@ export function Header({ playerState }) {
 
       ${hasPlayer && html`<div className="gh-divider" />`}
 
-      <div style=${{ flex: 1 }} />
+      ${hasPlayer
+        ? html`<${HeaderPlayer} />`
+        : html`<div style=${{ flex: 1 }} />`}
 
       ${hasPlayer && html`<div className="gh-divider" />`}
 

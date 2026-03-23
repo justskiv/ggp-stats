@@ -1,12 +1,23 @@
 import { html } from "../lib.js";
+import { usePlayer } from "./PlayerProvider.js";
 
 export function EpisodeCard({ episode }) {
   const ep = episode;
+  const player = usePlayer();
+  const isPlaying = player.episodeId === ep.id && player.playing;
+
   return html`
     <a href=${"#/" + ep.id} className="ep-card" style=${{ background: "var(--bg-card)", borderRadius: 12, padding: 24, textDecoration: "none", color: "inherit", display: "block", borderLeft: "4px solid " + (ep.speakerColors[0] || "var(--accent)"), cursor: "pointer" }}>
       <div style=${{ display: "flex", justifyContent: "space-between", marginBottom: 12 }}>
         <span style=${{ background: "var(--accent)", color: "#fff", borderRadius: 6, padding: "2px 10px", fontSize: 12, fontWeight: 700 }}>#${ep.number}</span>
-        <span style=${{ fontSize: 12, color: "var(--text-tertiary)" }}>${ep.date}</span>
+        ${isPlaying
+          ? html`<div className="eq">
+              <div className="eq-bar" style=${{ animation: "eq1 0.6s ease-in-out infinite" }} />
+              <div className="eq-bar" style=${{ animation: "eq2 0.5s ease-in-out infinite" }} />
+              <div className="eq-bar" style=${{ animation: "eq3 0.7s ease-in-out infinite" }} />
+            </div>`
+          : html`<span style=${{ fontSize: 12, color: "var(--text-tertiary)" }}>${ep.date}</span>`
+        }
       </div>
       <h3 style=${{ fontSize: 16, fontWeight: 700, marginBottom: 8, lineHeight: 1.3 }}>${ep.title}</h3>
       ${ep.description && html`<p style=${{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.5, marginBottom: 12 }}>${ep.description}</p>`}

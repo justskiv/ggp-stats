@@ -8,7 +8,7 @@ window.GGP_EPISODES["ep20"] = {
     description: "Глеб (PixelStorm) и Алексей Акулович обсуждают стратегии обучения, Go, алгоритмы, книги и хакатоны.",
     date: "2024-11-24",
     durationMinutes: 213,
-    audioUrl: "",
+    audioUrl: "https://api.mave.digital/storage/podcasts/3d65214c-1a2c-4d15-bd9d-b5a37936bbfb/episodes/4e6be947-bd27-4529-9093-133f4e98b432.mp3",
   },
 
   headerStats: [

@@ -8,7 +8,7 @@ window.GGP_EPISODES["ep21"] = {
     description: "Кирилл Мокевнин (Hexlet) и Влад обсуждают SICP, A-players, менторство, фундаментальное образование и как ИИ меняет порог входа в профессию.",
     date: "2025-01-15",
     durationMinutes: 176,
-    audioUrl: "",
+    audioUrl: "https://api.mave.digital/storage/podcasts/3d65214c-1a2c-4d15-bd9d-b5a37936bbfb/episodes/ddeef9ef-a1f7-4791-8425-5fd2b5aec212.mp3",
   },
 
   headerStats: [

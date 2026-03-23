@@ -1,6 +1,7 @@
 import { html, useState, useEffect } from "../lib.js";
 import { DASH_TABS } from "../constants.js";
 import { formatDate } from "../utils.js";
+import { usePlayer } from "./PlayerProvider.js";
 import { OverviewTab } from "./tabs/OverviewTab.js";
 import { SpeakersTab } from "./tabs/SpeakersTab.js";
 import { TopicsTab } from "./tabs/TopicsTab.js";
@@ -27,6 +28,23 @@ export function Dashboard({ data, routeTab }) {
   const tab = routeTab && validTabs.includes(routeTab) ? routeTab : "overview";
   const setTab = (t) => { window.location.hash = "#/" + data.meta.id + (t === "overview" ? "" : "/" + t); };
   const [metric, setMetric] = useState("words");
+  const player = usePlayer();
+
+  const isThisEpisode = player.episodeId === data.meta.id;
+  const isThisPlaying = isThisEpisode && player.playing;
+
+  const onPlayClick = () => {
+    if (isThisEpisode) { player.togglePlay(); }
+    else { player.play(data); }
+  };
+
+  const ctaLabel = isThisPlaying ? "Пауза"
+    : isThisEpisode ? "Продолжить"
+    : "Слушать выпуск";
+
+  const ctaIcon = isThisPlaying
+    ? html`<svg viewBox="0 0 24 24"><rect x=${6} y=${4} width=${4} height=${16} rx=${1} /><rect x=${14} y=${4} width=${4} height=${16} rx=${1} /></svg>`
+    : html`<svg viewBox="0 0 24 24"><polygon points="8,4 20,12 8,20" /></svg>`;
 
   useEffect(() => { document.title = data.meta.title; }, [data]);
 
@@ -48,9 +66,10 @@ export function Dashboard({ data, routeTab }) {
         `}
 
         <div className="ep-actions">
-          <button className="btn-play-main" disabled=${!data.meta.audioUrl}>
-            <svg viewBox="0 0 24 24"><polygon points="8,4 20,12 8,20" /></svg>
-            Слушать выпуск
+          <button className="btn-play-main"
+                  disabled=${!data.meta.audioUrl}
+                  onClick=${onPlayClick}>
+            ${ctaIcon} ${ctaLabel}
           </button>
         </div>
 
