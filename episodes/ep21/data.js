@@ -5,7 +5,10 @@ window.GGP_EPISODES["ep21"] = {
     number: 21,
     title: "GoGetPodcast · Выпуск #21",
     subtitle: "Обучение программированию — с новыми людьми",
+    description: "Кирилл Мокевнин (Hexlet) и Влад обсуждают SICP, A-players, менторство, фундаментальное образование и как ИИ меняет порог входа в профессию.",
+    date: "2025-01-15",
     durationMinutes: 176,
+    audioUrl: "",
   },
 
   headerStats: [

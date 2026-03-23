@@ -50,8 +50,11 @@ assets/
 ## Запуск
 
 ```bash
-python3 -m http.server 8000
+npx serve -l 8000
 ```
+
+> `python3 -m http.server` не поддерживает HTTP Range requests —
+> seeking в длинных MP3 не будет работать. Используй `npx serve`.
 
 ## Табы дашборда
 
@@ -75,7 +78,7 @@ python3 -m http.server 8000
 
 ## Формат данных выпуска (`data.js`)
 
-- `meta` — id, number, title, subtitle, durationMinutes
+- `meta` — id, number, title, subtitle, description, date, durationMinutes, audioUrl
 - `headerStats` — массив `[emoji, value, label]`
 - `colors` — цвета спикеров (ключи совпадают с dataKey в barData/radarData)
 - `speakers` — массив (name, full, role, words, pct, time, timePct, utt, avgW, maxW, color)

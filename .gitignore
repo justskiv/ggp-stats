@@ -1,1 +1,8 @@
 .DS_Store
+/.idea/.gitignore
+/.idea/copilot.data.migration.ask2agent.xml
+/.idea/ggp_stats.iml
+/.idea/go.imports.xml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/vcs.xml

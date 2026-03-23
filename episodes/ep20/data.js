@@ -5,7 +5,10 @@ window.GGP_EPISODES["ep20"] = {
     number: 20,
     title: "GoGetPodcast · Выпуск #20",
     subtitle: "Обучение программированию — юбилейный выпуск",
+    description: "Глеб (PixelStorm) и Алексей Акулович обсуждают стратегии обучения, Go, алгоритмы, книги и хакатоны.",
+    date: "2024-11-24",
     durationMinutes: 213,
+    audioUrl: "",
   },
 
   headerStats: [
