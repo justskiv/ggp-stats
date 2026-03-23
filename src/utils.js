@@ -18,6 +18,13 @@ export function formatTime(seconds) {
   return h > 0 ? `${h}:${pad(m)}:${pad(s)}` : `${m}:${pad(s)}`;
 }
 
+export function formatMinutes(min) {
+  const h = Math.floor(min / 60);
+  const m = Math.floor(min % 60);
+  const pad = (n) => String(n).padStart(2, "0");
+  return h > 0 ? `${h}:${pad(m)}` : `${m}:${pad(0)}`;
+}
+
 export function pluralize(n, one, few, many) {
   const mod10 = n % 10, mod100 = n % 100;
   if (mod100 >= 11 && mod100 <= 19) return many;

@@ -1,5 +1,6 @@
-import { html, useRef, useEffect, useCallback } from "../lib.js";
+import { html, useRef, useEffect, useCallback, useState } from "../lib.js";
 import { usePlayer } from "./PlayerProvider.js";
+import { ChapterPanel } from "./ChapterPanel.js";
 import { formatTime } from "../utils.js";
 
 const PlayIcon = html`<svg width=${14} height=${14} viewBox="0 0 24 24" fill="white"><polygon points="8,4 20,12 8,20" /></svg>`;
@@ -37,6 +38,9 @@ export function HeaderPlayer() {
     episodeMeta, topics, audio, currentTimeRef,
     togglePlay, seek, cycleSpeed, close,
   } = usePlayer();
+
+  const [chaptersOpen, setChaptersOpen] = useState(false);
+  const popoverWrapRef = useRef(null);
 
   const fillRef = useRef(null);
   const thumbRef = useRef(null);
@@ -113,7 +117,7 @@ export function HeaderPlayer() {
           <div className="hp-track">
             <div className="hp-fill" ref=${fillRef} />
             ${duration > 0 && topics.map((topic, i) => {
-              const pct = (topic.s * 60 / duration) * 100;
+              const pct = (topic.s / duration) * 100;
               if (pct <= 0) return null;
               return html`<div key=${i} className="hp-marker" style=${{ left: pct + "%" }} />`;
             })}
@@ -129,8 +133,15 @@ export function HeaderPlayer() {
         ${playbackRate}x
       </div>
 
-      <div className="hp-chapters-btn" title="Список глав">
-        ${ChaptersIcon}
+      <div className="hp-popover-wrap" ref=${popoverWrapRef}>
+        <div className=${`hp-chapters-btn${chaptersOpen ? " active" : ""}`}
+             onClick=${() => setChaptersOpen(p => !p)}
+             title="Список тем">
+          ${ChaptersIcon}
+        </div>
+        ${chaptersOpen && html`
+          <${ChapterPanel} onClose=${() => setChaptersOpen(false)} wrapRef=${popoverWrapRef} />
+        `}
       </div>
 
       <div className="hp-close" onClick=${close} title="Закрыть плеер">

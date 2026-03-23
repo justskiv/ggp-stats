@@ -17,10 +17,10 @@ export function TopicsTab({ data }) {
         ${topics.map((tp, i) => html`
           <div key=${i} style=${{ display: "flex", alignItems: "center", marginBottom: 6, gap: 8 }}>
             <div style=${{ width: 50, textAlign: "right", fontSize: 11, color: "var(--text-tertiary)", flexShrink: 0 }}>
-              ${Math.floor(tp.s / 60)}:${String(tp.s % 60).padStart(2, "0")}
+              ${Math.floor(tp.s / 3600)}:${String(Math.floor((tp.s % 3600) / 60)).padStart(2, "0")}:${String(Math.floor(tp.s % 60)).padStart(2, "0")}
             </div>
             <div style=${{ flex: 1, position: "relative", height: 28 }}>
-              <div style=${{ position: "absolute", left: (tp.s / meta.durationMinutes) * 100 + "%", width: (tp.d / meta.durationMinutes) * 100 + "%", height: "100%", background: tp.c, borderRadius: 6, display: "flex", alignItems: "center", paddingLeft: 8, fontSize: 11, fontWeight: 500, color: "#fff", overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}
+              <div style=${{ position: "absolute", left: (tp.s / 60 / meta.durationMinutes) * 100 + "%", width: (tp.d / meta.durationMinutes) * 100 + "%", height: "100%", background: tp.c, borderRadius: 6, display: "flex", alignItems: "center", paddingLeft: 8, fontSize: 11, fontWeight: 500, color: "#fff", overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}
                 title=${tp.t + " (" + tp.d + " мин)"}>
                 ${tp.t}
               </div>

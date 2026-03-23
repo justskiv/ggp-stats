@@ -44,10 +44,9 @@ export function PlayerProvider({ children }) {
 
       const topics = topicsRef.current;
       if (topics.length === 0) return;
-      const timeMin = t / 60;
       let chapter = null;
       for (let i = topics.length - 1; i >= 0; i--) {
-        if (topics[i].s <= timeMin) { chapter = topics[i]; break; }
+        if (topics[i].s <= t) { chapter = topics[i]; break; }
       }
       setState((s) => {
         if (s.currentChapter === chapter) return s;
