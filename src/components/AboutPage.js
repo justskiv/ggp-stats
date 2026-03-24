@@ -56,7 +56,7 @@ const GUESTS = [
   },
   {
     name: "Алексей Акулович",
-    desc: "Go-разработчик. inDrive, ex-Tinkoff, ex-VK",
+    desc: "Staff Engineer. inDrive, ex-Tinkoff, ex-VK",
     avatar: "alexey-akulovich.jpg",
     socials: [
       { href: "https://t.me/atercattus_was_here", title: "Telegram", icon: TgIcon },

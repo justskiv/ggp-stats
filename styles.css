@@ -627,7 +627,11 @@ body {
   font-size: 14px;
   line-height: 1.4;
   color: var(--text-secondary);
-  min-height: 2.8em;
+  min-height: 4.2em;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .ab-person-actions {
   display: flex;
