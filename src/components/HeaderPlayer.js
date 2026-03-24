@@ -36,7 +36,7 @@ export function HeaderPlayer() {
   const {
     playing, duration, playbackRate, currentChapter,
     episodeMeta, topics, audio, currentTimeRef,
-    togglePlay, seek, cycleSpeed, close,
+    togglePlay, seek, setSpeed, close,
   } = usePlayer();
 
   const [chaptersOpen, setChaptersOpen] = useState(false);
@@ -74,10 +74,15 @@ export function HeaderPlayer() {
     if (!trackRef.current || !tooltipRef.current || !duration) return;
     const rect = trackRef.current.getBoundingClientRect();
     const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-    tooltipRef.current.textContent = formatTime(pct * duration);
+    const sec = pct * duration;
+    const topic = topics.findLast(tp => tp.s <= sec);
+    const timeEl = tooltipRef.current.querySelector(".hp-tooltip-time");
+    const topicEl = tooltipRef.current.querySelector(".hp-tooltip-topic");
+    if (timeEl) timeEl.textContent = formatTime(sec);
+    if (topicEl) topicEl.textContent = topic ? topic.t : "";
     tooltipRef.current.style.left = (pct * 100) + "%";
     tooltipRef.current.style.opacity = "1";
-  }, [duration]);
+  }, [duration, topics]);
 
   const onTrackLeave = useCallback(() => {
     if (tooltipRef.current) tooltipRef.current.style.opacity = "0";
@@ -123,14 +128,26 @@ export function HeaderPlayer() {
             })}
             <div className="hp-thumb" ref=${thumbRef} />
           </div>
-          <div className="hp-tooltip" ref=${tooltipRef}>0:00</div>
+          <div className="hp-tooltip" ref=${tooltipRef}>
+            <span className="hp-tooltip-time">0:00</span>
+            <span className="hp-tooltip-topic" />
+          </div>
         </div>
       </div>
 
       <div className="hp-time" ref=${timeRef}>0:00</div>
 
-      <div className="hp-speed" onClick=${cycleSpeed} title="Скорость воспроизведения">
-        ${playbackRate}x
+      <div className="hp-speed-wrap">
+        <div className="hp-speed">${playbackRate}x</div>
+        <div className="hp-speed-menu">
+          ${[1, 1.25, 1.5, 1.75, 2].map(r => html`
+            <div key=${r}
+                 className=${`hp-speed-opt${r === playbackRate ? " active" : ""}`}
+                 onClick=${() => setSpeed(r)}>
+              ${r}x
+            </div>
+          `)}
+        </div>
       </div>
 
       <div className="hp-popover-wrap" ref=${popoverWrapRef}>
