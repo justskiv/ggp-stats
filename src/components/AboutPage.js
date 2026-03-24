@@ -23,7 +23,7 @@ const AVATAR_DIR = "assets/img/guests/";
 
 const HOST = {
   name: "Николай Тузов",
-  desc: "Создатель и ведущий GoGetPodcast. Go-разработчик.",
+  desc: "Создатель и ведущий GoGetPodcast. Go-разработчик, инженер, блогер. ex-Plata, ex-Lamoda, ex-Gaijin.",
   avatar: "nikolay-tuzov.jpg",
   socials: [
     { href: "https://t.me/ntuzov", title: "Telegram", icon: TgIcon },
@@ -46,7 +46,7 @@ const GUESTS = [
   },
   {
     name: "Влад Тен",
-    desc: "Go-разработчик.",
+    desc: "Go-разработчик, блогер, автор курсов для инженеров.",
     avatar: "vlad-ten.png",
     socials: [
       { href: "https://t.me/tenfoundation", title: "Telegram", icon: TgIcon },
@@ -56,7 +56,7 @@ const GUESTS = [
   },
   {
     name: "Алексей Акулович",
-    desc: "Go-разработчик.",
+    desc: "Go-разработчик. inDrive, ex-Tinkoff, ex-VK",
     avatar: "alexey-akulovich.jpg",
     socials: [
       { href: "https://t.me/atercattus_was_here", title: "Telegram", icon: TgIcon },
@@ -66,7 +66,7 @@ const GUESTS = [
   },
   {
     name: "Глеб Яльчик",
-    desc: "Go-разработчик.",
+    desc: "Go евангелист, технический директор Pixel Technologies.",
     avatar: "gleb-yalchik.png",
     socials: [],
     episodes: ["ep20"],
@@ -77,14 +77,13 @@ const ChevronIcon = html`<svg viewBox="0 0 16 16" width=${14} height=${14} fill=
   <path d="M4.47 5.47a.75.75 0 0 1 1.06 0L8 7.94l2.47-2.47a.75.75 0 1 1 1.06 1.06l-3 3a.75.75 0 0 1-1.06 0l-3-3a.75.75 0 0 1 0-1.06z"/>
 </svg>`;
 
-function EpisodeDropdown({ episodeIds }) {
+function useEpisodeDropdown(episodeIds) {
   const [open, setOpen] = useState(false);
   const wrapRef = useRef(null);
   const registry = window.GGP_EPISODES?._registry || [];
-  const items = episodeIds
+  const items = (episodeIds || [])
     .map(id => registry.find(e => e.id === id))
     .filter(Boolean);
-
   const toggle = useCallback(() => setOpen(v => !v), []);
 
   useEffect(() => {
@@ -104,16 +103,43 @@ function EpisodeDropdown({ episodeIds }) {
     };
   }, [open]);
 
-  if (items.length === 0) return null;
+  return { open, toggle, items, wrapRef };
+}
+
+function PersonCard({ person }) {
+  const { open, toggle, items, wrapRef } = useEpisodeDropdown(person.episodes);
 
   return html`
-    <div className="ab-ep-wrap" ref=${wrapRef}>
-      <button className="ab-ep-btn" onClick=${toggle}>
-        Выпуски (${items.length})
-        <span className=${`ab-ep-chevron${open ? " ab-ep-chevron--open" : ""}`}>
-          ${ChevronIcon}
-        </span>
-      </button>
+    <div className="ab-person-wrap" ref=${wrapRef}>
+      <article className="ab-person-card">
+        <div className="ab-person-avatar">
+          <img src=${AVATAR_DIR + person.avatar} alt=${person.name} />
+        </div>
+        <div className="ab-person-info">
+          <h3 className="ab-person-name">${person.name}</h3>
+          <p className="ab-person-desc">${person.desc}</p>
+          <div className="ab-person-actions">
+            ${person.socials.length > 0 && html`
+              <div className="ab-socials">
+                ${person.socials.map(s => html`
+                  <a key=${s.href} className="ab-social" href=${s.href}
+                     target="_blank" rel="noopener noreferrer" title=${s.title}>
+                    ${s.icon}
+                  </a>
+                `)}
+              </div>
+            `}
+            ${items.length > 0 && html`
+              <button className="ab-ep-btn" onClick=${toggle}>
+                Выпуски (${items.length})
+                <span className=${`ab-ep-chevron${open ? " ab-ep-chevron--open" : ""}`}>
+                  ${ChevronIcon}
+                </span>
+              </button>
+            `}
+          </div>
+        </div>
+      </article>
       ${open && html`
         <ul className="ab-ep-list">
           ${items.map(ep => html`
@@ -127,34 +153,6 @@ function EpisodeDropdown({ episodeIds }) {
         </ul>
       `}
     </div>`;
-}
-
-function PersonCard({ person }) {
-  return html`
-    <article className="ab-person-card">
-      <div className="ab-person-avatar">
-        <img src=${AVATAR_DIR + person.avatar} alt=${person.name} />
-      </div>
-      <div className="ab-person-info">
-        <h3 className="ab-person-name">${person.name}</h3>
-        <p className="ab-person-desc">${person.desc}</p>
-        <div className="ab-person-actions">
-          ${person.socials.length > 0 && html`
-            <div className="ab-socials">
-              ${person.socials.map(s => html`
-                <a key=${s.href} className="ab-social" href=${s.href}
-                   target="_blank" rel="noopener noreferrer" title=${s.title}>
-                  ${s.icon}
-                </a>
-              `)}
-            </div>
-          `}
-          ${person.episodes && html`
-            <${EpisodeDropdown} episodeIds=${person.episodes} />
-          `}
-        </div>
-      </div>
-    </article>`;
 }
 
 export function AboutPage() {

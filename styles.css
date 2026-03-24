@@ -52,13 +52,20 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
-  display: flex;
-  align-items: center;
   height: 60px;
-  padding: 0 24px;
-  gap: 16px;
   border-bottom: 1px solid rgba(51, 65, 85, 0.4);
   background: linear-gradient(180deg, #161b2e 0%, var(--bg-base) 100%);
+  display: flex;
+  align-items: center;
+}
+.gh-inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  max-width: 1148px;
+  margin: 0 auto;
+  padding: 0 24px;
 }
 
 .gh-logo {
@@ -570,6 +577,7 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 16px;
+  align-items: start;
 }
 
 /* Unified person card */
@@ -582,10 +590,13 @@ body {
   align-items: center;
   gap: 16px;
   position: relative;
+  overflow: hidden;
   max-width: 480px;
 }
+.ab-person-wrap { position: relative; }
 .ab-people-grid .ab-person-card { max-width: none; }
-.ab-people:first-of-type .ab-person-card { margin: 0 auto; }
+.ab-people:first-of-type .ab-person-wrap { max-width: 480px; margin: 0 auto; }
+.ab-people:first-of-type .ab-person-card { max-width: none; }
 .ab-person-card::after {
   content: '';
   position: absolute;
@@ -616,6 +627,7 @@ body {
   font-size: 14px;
   line-height: 1.4;
   color: var(--text-secondary);
+  min-height: 2.8em;
 }
 .ab-person-actions {
   display: flex;
@@ -645,7 +657,6 @@ body {
 }
 
 /* Episode dropdown */
-.ab-ep-wrap { position: relative; }
 .ab-ep-btn {
   display: inline-flex;
   align-items: center;
