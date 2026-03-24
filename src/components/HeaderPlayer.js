@@ -40,7 +40,9 @@ export function HeaderPlayer() {
   } = usePlayer();
 
   const [chaptersOpen, setChaptersOpen] = useState(false);
+  const [speedOpen, setSpeedOpen] = useState(false);
   const popoverWrapRef = useRef(null);
+  const speedWrapRef = useRef(null);
 
   const fillRef = useRef(null);
   const thumbRef = useRef(null);
@@ -88,21 +90,40 @@ export function HeaderPlayer() {
     if (tooltipRef.current) tooltipRef.current.style.opacity = "0";
   }, []);
 
+  useEffect(() => {
+    if (!speedOpen) return;
+    const onKey = (e) => { if (e.key === "Escape") setSpeedOpen(false); };
+    const onClick = (e) => {
+      if (speedWrapRef.current && !speedWrapRef.current.contains(e.target))
+        setSpeedOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    const timer = setTimeout(() =>
+      document.addEventListener("pointerdown", onClick, true), 0);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.removeEventListener("pointerdown", onClick, true);
+      clearTimeout(timer);
+    };
+  }, [speedOpen]);
+
   const skipBack = () => seek(currentTimeRef.current - 15);
   const skipFwd = () => seek(currentTimeRef.current + 30);
 
   return html`
     <div className="hp">
-      <div className="hp-play" onClick=${togglePlay}>
-        ${playing ? PauseIcon : PlayIcon}
-      </div>
+      <div className="hp-controls">
+        <button className="hp-skip" onClick=${skipBack} title="Назад 15 сек">
+          ${SkipBackIcon}
+        </button>
 
-      <div className="hp-skip" onClick=${skipBack} title="Назад 15 сек">
-        ${SkipBackIcon}
-      </div>
+        <button className="hp-play" onClick=${togglePlay} aria-label=${playing ? "Пауза" : "Воспроизвести"}>
+          ${playing ? PauseIcon : PlayIcon}
+        </button>
 
-      <div className="hp-skip" onClick=${skipFwd} title="Вперёд 30 сек">
-        ${SkipFwdIcon}
+        <button className="hp-skip" onClick=${skipFwd} title="Вперёд 30 сек">
+          ${SkipFwdIcon}
+        </button>
       </div>
 
       <div className="hp-center">
@@ -137,32 +158,37 @@ export function HeaderPlayer() {
 
       <div className="hp-time" ref=${timeRef}>0:00</div>
 
-      <div className="hp-speed-wrap">
-        <div className="hp-speed">${playbackRate}x</div>
-        <div className="hp-speed-menu">
-          ${[1, 1.25, 1.5, 1.75, 2].map(r => html`
-            <div key=${r}
-                 className=${`hp-speed-opt${r === playbackRate ? " active" : ""}`}
-                 onClick=${() => setSpeed(r)}>
-              ${r}x
-            </div>
-          `)}
-        </div>
+      <div className="hp-speed-wrap" ref=${speedWrapRef}>
+        <button className=${`hp-speed${speedOpen ? " active" : ""}`}
+             onClick=${() => setSpeedOpen(p => !p)} aria-label="Скорость воспроизведения">
+          ${playbackRate}x
+        </button>
+        ${speedOpen && html`
+          <div className="hp-speed-menu">
+            ${[1, 1.25, 1.5, 1.75, 2].map(r => html`
+              <button key=${r}
+                   className=${`hp-speed-opt${r === playbackRate ? " active" : ""}`}
+                   onClick=${() => { setSpeed(r); setSpeedOpen(false); }}>
+                ${r}x
+              </button>
+            `)}
+          </div>
+        `}
       </div>
 
       <div className="hp-popover-wrap" ref=${popoverWrapRef}>
-        <div className=${`hp-chapters-btn${chaptersOpen ? " active" : ""}`}
+        <button className=${`hp-chapters-btn${chaptersOpen ? " active" : ""}`}
              onClick=${() => setChaptersOpen(p => !p)}
              title="Список тем">
           ${ChaptersIcon}
-        </div>
+        </button>
         ${chaptersOpen && html`
           <${ChapterPanel} onClose=${() => setChaptersOpen(false)} wrapRef=${popoverWrapRef} />
         `}
       </div>
 
-      <div className="hp-close" onClick=${close} title="Закрыть плеер">
+      <button className="hp-close" onClick=${close} title="Закрыть плеер">
         ${CloseIcon}
-      </div>
+      </button>
     </div>`;
 }
