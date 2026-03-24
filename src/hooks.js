@@ -3,6 +3,7 @@ import { useState, useEffect } from "./lib.js";
 export function useRoute() {
   const parse = (hash) => {
     if (!hash || hash === "#" || hash === "#/") return { page: "list" };
+    if (hash === "#/about") return { page: "about" };
     const m = hash.match(/^#\/([^/]+)(?:\/([^/]+))?$/);
     return m ? { page: "episode", id: m[1], tab: m[2] || null } : { page: "list" };
   };

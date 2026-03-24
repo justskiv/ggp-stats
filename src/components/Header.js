@@ -24,7 +24,7 @@ export function Header() {
       ${hasPlayer && html`<div className="gh-divider" />`}
 
       <nav className="gh-nav">
-        <a href="#">О нас</a>
+        <a href="#/about">О нас</a>
       </nav>
 
       <a className="gh-rss" href=${RSS_URL} target="_blank"
