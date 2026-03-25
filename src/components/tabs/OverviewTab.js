@@ -72,7 +72,7 @@ export function OverviewTab({ data, metric, setMetric }) {
               <${CartesianGrid} strokeDasharray="3 3" stroke="var(--border)" />
               <${XAxis} dataKey="m" tick=${{ fill: "var(--text-secondary)", fontSize: 11 }} />
               <${YAxis} tick=${{ fill: "var(--text-secondary)", fontSize: 11 }} />
-              <${Tooltip} content=${Tip} />
+              <${Tooltip} content=${Tip} cursor=${{ fill: "rgba(255,255,255,0.06)" }} />
               ${speakers.map((s, i) => html`
                 <${Bar} key=${s.name} dataKey=${speakerKeys[i]} name=${s.name} fill=${speakerColors[i]} radius=${[4,4,0,0]} />
               `)}

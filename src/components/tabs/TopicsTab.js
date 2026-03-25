@@ -59,7 +59,7 @@ export function TopicsTab({ data }) {
             <${CartesianGrid} strokeDasharray="3 3" stroke="var(--border)" horizontal=${false} />
             <${XAxis} type="number" tick=${{ fill: "var(--text-secondary)", fontSize: 11 }} unit=" мин" />
             <${YAxis} type="category" dataKey="topic" width=${220} tick=${{ fill: "var(--text-secondary)", fontSize: 11 }} />
-            <${Tooltip} content=${Tip} />
+            <${Tooltip} content=${Tip} cursor=${{ fill: "rgba(255,255,255,0.06)" }} />
             <${Bar} dataKey="duration" name="Длительность" fill="var(--accent)" radius=${[0, 6, 6, 0]} />
           <//>
         <//>
