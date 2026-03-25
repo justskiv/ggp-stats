@@ -44,3 +44,24 @@ export function useEpisodeData(id) {
   }, [id]);
   return state;
 }
+
+export function useSpaceToggle(togglePlay, isActive) {
+  useEffect(() => {
+    if (!isActive) return;
+
+    const handler = (e) => {
+      if (e.code !== "Space") return;
+      if (e.repeat) return;
+      if (e.ctrlKey || e.metaKey || e.altKey || e.shiftKey) return;
+
+      const el = e.target;
+      if (el.closest("input, textarea, select, button, [contenteditable]")) return;
+
+      e.preventDefault();
+      togglePlay();
+    };
+
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [togglePlay, isActive]);
+}

@@ -2,6 +2,7 @@ import {
   html, useState, useEffect, useRef,
   useCallback, createContext, useContext,
 } from "../lib.js";
+import { useSpaceToggle } from "../hooks.js";
 
 const PlayerContext = createContext(null);
 
@@ -136,6 +137,8 @@ export function PlayerProvider({ children }) {
       topics: [],
     }));
   }, [audio]);
+
+  useSpaceToggle(togglePlay, !!state.episodeId);
 
   const value = {
     ...state,
