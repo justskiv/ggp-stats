@@ -114,7 +114,6 @@ export function ChapterPanel({ onClose, wrapRef }) {
                 </div>
               </div>
               <div className="cp-name">${topic.t}</div>
-              <div className="cp-dur">${topic.d}м</div>
             </div>`;
         })}
       </div>
