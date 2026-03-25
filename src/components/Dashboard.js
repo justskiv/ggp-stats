@@ -2,6 +2,7 @@ import { html, useState, useEffect } from "../lib.js";
 import { DASH_TABS } from "../constants.js";
 import { formatDate } from "../utils.js";
 import { usePlayer } from "./PlayerProvider.js";
+import { AboutTab } from "./tabs/AboutTab.js";
 import { OverviewTab } from "./tabs/OverviewTab.js";
 import { SpeakersTab } from "./tabs/SpeakersTab.js";
 import { TopicsTab } from "./tabs/TopicsTab.js";
@@ -9,6 +10,7 @@ import { ResourcesTab } from "./tabs/ResourcesTab.js";
 import { FunFactsTab } from "./tabs/FunFactsTab.js";
 
 const TAB_COMPONENTS = {
+  about: AboutTab,
   overview: OverviewTab,
   speakers: SpeakersTab,
   topics: TopicsTab,
@@ -25,8 +27,8 @@ const STAT_ICONS = [
 
 export function Dashboard({ data, routeTab }) {
   const validTabs = DASH_TABS.map(t => t.id);
-  const tab = routeTab && validTabs.includes(routeTab) ? routeTab : "overview";
-  const setTab = (t) => { window.location.hash = "#/" + data.meta.id + (t === "overview" ? "" : "/" + t); };
+  const tab = routeTab && validTabs.includes(routeTab) ? routeTab : "about";
+  const setTab = (t) => { window.location.hash = "#/" + data.meta.id + (t === "about" ? "" : "/" + t); };
   const [metric, setMetric] = useState("words");
   const player = usePlayer();
 

@@ -11,6 +11,11 @@ window.GGP_EPISODES["ep21"] = {
     audioUrl: "https://api.mave.digital/storage/podcasts/3d65214c-1a2c-4d15-bd9d-b5a37936bbfb/episodes/ddeef9ef-a1f7-4791-8425-5fd2b5aec212.mp3",
   },
 
+  about: [
+    "Глубоко копаем тему самообразования разработчиков. Вместе с Кириллом Мокевниным (сооснователь Хекслет) и Владом Теном разбираем, как правильно учиться сложным вещам и почему возникает «иллюзия понимания», когда теорию вроде бы прочитал, а на практике применить не можешь.",
+    "Также поговорили про связь теории и практики, ловушку подхода «выучу, когда понадобится» (just-in-time learning) и зачем на самом деле инженеру нужна фундаментальная база на примере сетей, ОС и баз данных. Прошлись по золотому фонду IT-литературы: что реально стоит читать (Петцольд, SICP, Таненбаум), а что лучше скипать. Затронули найм, самостоятельность (A-players), бизнес-романы для инженеров и то, как не отупеть, делегируя написание кода нейросетям.",
+  ],
+
   headerStats: [
     ["⏱", "2ч 56м", "Длительность"],
     ["💬", "12 200", "Всего слов"],
@@ -21,9 +26,9 @@ window.GGP_EPISODES["ep21"] = {
   colors: { n: "#6366f1", k: "#f59e0b", v: "#10b981" },
 
   speakers: [
-    { name: "Николай", full: "Николай Тузов", role: "Ведущий", words: 4850, pct: 39.8, time: 68, timePct: 38.6, utt: 128, avgW: 37.9, maxW: 180, maxTopic: "SICP и обучение", color: "#6366f1" },
-    { name: "Кирилл", full: "Кирилл Мокевнин", role: "Гость · Hexlet", words: 5200, pct: 42.6, time: 72, timePct: 40.9, utt: 107, avgW: 48.6, maxW: 210, maxTopic: "A-players и образование", color: "#f59e0b" },
-    { name: "Влад", full: "Влад Тен", role: "Гость · YouTube", words: 2150, pct: 17.6, time: 36, timePct: 20.5, utt: 68, avgW: 31.6, maxW: 120, maxTopic: "Изучение алгоритмов", color: "#10b981" },
+    { name: "Николай", full: "Николай Тузов", role: "Ведущий", img: "nikolay-tuzov.jpg", words: 4850, pct: 39.8, time: 68, timePct: 38.6, utt: 128, avgW: 37.9, maxW: 180, maxTopic: "SICP и обучение", color: "#6366f1" },
+    { name: "Кирилл", full: "Кирилл Мокевнин", role: "Гость · Hexlet", img: "kirill-mokevnin.png", words: 5200, pct: 42.6, time: 72, timePct: 40.9, utt: 107, avgW: 48.6, maxW: 210, maxTopic: "A-players и образование", color: "#f59e0b" },
+    { name: "Влад", full: "Влад Тен", role: "Гость · YouTube", img: "vlad-ten.png", words: 2150, pct: 17.6, time: 36, timePct: 20.5, utt: 68, avgW: 31.6, maxW: 120, maxTopic: "Изучение алгоритмов", color: "#10b981" },
   ],
 
   radarData: [

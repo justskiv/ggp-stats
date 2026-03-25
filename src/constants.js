@@ -1,7 +1,8 @@
 export const DASH_TABS = [
+  { id: "about", label: "📝 Описание" },
+  { id: "topics", label: "📋 Темы" },
   { id: "overview", label: "📊 Обзор" },
   { id: "speakers", label: "🗣 Спикеры" },
-  { id: "topics", label: "📋 Темы" },
   { id: "resources", label: "📚 Ресурсы" },
   { id: "fun", label: "🎉 Fun Facts" },
 ];

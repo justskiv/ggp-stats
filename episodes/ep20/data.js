@@ -11,6 +11,12 @@ window.GGP_EPISODES["ep20"] = {
     audioUrl: "https://api.mave.digital/storage/podcasts/3d65214c-1a2c-4d15-bd9d-b5a37936bbfb/episodes/4e6be947-bd27-4529-9093-133f4e98b432.mp3",
   },
 
+  about: [
+    "Юбилейный 20-й выпуск GoGetPodcast! 🔥",
+    "Вместе с Глебом и Алексеем разбираем фундаментальную тему — как эффективно учиться программированию и развиваться инженеру.",
+    "Обсудили вечный холивар «теория vs практика», нужно ли читать Дональда Кнута и учить алгоритмы через LeetCode, стоит ли оверинжинирить пет-проекты и почему спецификацию языка Go нужно считать Библией. В выпуске много личного опыта: от изучения DOS по мануалам в 80-х до современных подходов с LLM.",
+  ],
+
   headerStats: [
     ["⏱", "3ч 33м", "Длительность"],
     ["💬", "32 100", "Всего слов"],
@@ -21,9 +27,9 @@ window.GGP_EPISODES["ep20"] = {
   colors: { n: "#6366f1", k: "#f59e0b", v: "#10b981" },
 
   speakers: [
-    { name: "Николай", full: "Николай Тузов", role: "Ведущий", words: 15300, pct: 47.7, time: 96, timePct: 44.8, utt: 204, avgW: 75.0, maxW: 1184, maxTopic: "Введение и обучение", color: "#6366f1" },
-    { name: "Глеб", full: "Глеб", role: "Гость · PixelStorm", words: 10350, pct: 32.2, time: 75, timePct: 34.9, utt: 156, avgW: 66.3, maxW: 550, maxTopic: "Практика vs теория", color: "#f59e0b" },
-    { name: "Алексей", full: "Алексей Акулович", role: "Гость · Go-разработчик", words: 6450, pct: 20.1, time: 43, timePct: 20.3, utt: 118, avgW: 54.7, maxW: 432, maxTopic: "Go-ресурсы и оптимизации", color: "#10b981" },
+    { name: "Николай", full: "Николай Тузов", role: "Ведущий", img: "nikolay-tuzov.jpg", words: 15300, pct: 47.7, time: 96, timePct: 44.8, utt: 204, avgW: 75.0, maxW: 1184, maxTopic: "Введение и обучение", color: "#6366f1" },
+    { name: "Глеб", full: "Глеб", role: "Гость · PixelStorm", img: "gleb-yalchik.png", words: 10350, pct: 32.2, time: 75, timePct: 34.9, utt: 156, avgW: 66.3, maxW: 550, maxTopic: "Практика vs теория", color: "#f59e0b" },
+    { name: "Алексей", full: "Алексей Акулович", role: "Гость · Go-разработчик", img: "alexey-akulovich.jpg", words: 6450, pct: 20.1, time: 43, timePct: 20.3, utt: 118, avgW: 54.7, maxW: 432, maxTopic: "Go-ресурсы и оптимизации", color: "#10b981" },
   ],
 
   radarData: [

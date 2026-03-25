@@ -25,6 +25,7 @@ const HOST = {
   name: "Николай Тузов",
   desc: "Создатель и ведущий GoGetPodcast. Go-разработчик, инженер, блогер. ex-Plata, ex-Lamoda, ex-Gaijin.",
   avatar: "nikolay-tuzov.jpg",
+  color: "#6366f1",
   socials: [
     { href: "https://t.me/ntuzov", title: "Telegram", icon: TgIcon },
     { href: "https://www.youtube.com/@nikolay_tuzov", title: "YouTube", icon: YtIcon },
@@ -38,6 +39,7 @@ const GUESTS = [
     name: "Кирилл Мокевнин",
     desc: "Основатель Хекслет. Разработчик, преподаватель.",
     avatar: "kirill-mokevnin.png",
+    color: "#f59e0b",
     socials: [
       { href: "https://t.me/orgprog", title: "Telegram", icon: TgIcon },
       { href: "https://www.youtube.com/@mokevnin", title: "YouTube", icon: YtIcon },
@@ -48,6 +50,7 @@ const GUESTS = [
     name: "Влад Тен",
     desc: "Go-разработчик, блогер, автор курсов для инженеров.",
     avatar: "vlad-ten.png",
+    color: "#10b981",
     socials: [
       { href: "https://t.me/tenfoundation", title: "Telegram", icon: TgIcon },
       { href: "https://www.youtube.com/@vladtenten", title: "YouTube", icon: YtIcon },
@@ -58,6 +61,7 @@ const GUESTS = [
     name: "Алексей Акулович",
     desc: "Staff Engineer. inDrive, ex-Tinkoff, ex-VK",
     avatar: "alexey-akulovich.jpg",
+    color: "#3b82f6",
     socials: [
       { href: "https://t.me/atercattus_was_here", title: "Telegram", icon: TgIcon },
       { href: "https://www.youtube.com/@AterCattus", title: "YouTube", icon: YtIcon },
@@ -68,6 +72,7 @@ const GUESTS = [
     name: "Глеб Яльчик",
     desc: "Go евангелист, технический директор Pixel Technologies.",
     avatar: "gleb-yalchik.png",
+    color: "#8b5cf6",
     socials: [],
     episodes: ["ep20"],
   },
@@ -111,7 +116,7 @@ function PersonCard({ person }) {
 
   return html`
     <div className="ab-person-wrap" ref=${wrapRef}>
-      <article className="ab-person-card">
+      <article className="ab-person-card" style=${{ "--sp-c": person.color || "var(--accent)" }}>
         <div className="ab-person-avatar">
           <img src=${AVATAR_DIR + person.avatar} alt=${person.name} />
         </div>
