@@ -452,6 +452,31 @@ body {
 .ep-stat-val { font-size: 22px; font-weight: 800; color: var(--text-bright); margin-bottom: 4px; letter-spacing: -0.5px; }
 .ep-stat-lbl { font-size: 12px; font-weight: 500; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; }
 
+/* Topic list */
+.tl-list { display: flex; flex-direction: column; }
+.tl-row {
+  display: flex; align-items: center;
+  padding: 10px 12px; border-radius: 8px;
+  cursor: pointer; transition: background 0.15s;
+}
+.tl-row:hover { background: rgba(255, 255, 255, 0.04); }
+.tl-icon {
+  width: 16px; flex-shrink: 0; margin-right: 4px;
+  color: var(--accent); opacity: 0;
+  transition: opacity 0.15s;
+}
+.tl-row:hover .tl-icon { opacity: 1; }
+.tl-time {
+  font-size: 14px; color: var(--text-tertiary);
+  font-variant-numeric: tabular-nums; font-family: monospace;
+  flex-shrink: 0; margin-right: 16px;
+}
+.tl-row:hover .tl-time { color: var(--accent-light); }
+.tl-name {
+  font-size: 14px; color: var(--text-primary);
+  line-height: 1.4; min-width: 0;
+}
+
 /* Sticky tabs */
 .ep-tabs-wrapper {
   background: rgba(15, 23, 42, 0.8);
