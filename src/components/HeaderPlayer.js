@@ -142,8 +142,9 @@ export function HeaderPlayer() {
              onMouseLeave=${onTrackLeave}>
           <div className="hp-track">
             <div className="hp-fill" ref=${fillRef} />
-            ${duration > 0 && topics.map((topic, i) => {
-              const pct = (topic.s / duration) * 100;
+            ${(duration > 0 || episodeMeta?.durationMinutes) && topics.map((topic, i) => {
+              const dur = duration || (episodeMeta?.durationMinutes * 60);
+              const pct = (topic.s / dur) * 100;
               if (pct <= 0) return null;
               return html`<div key=${i} className="hp-marker" style=${{ left: pct + "%" }} />`;
             })}

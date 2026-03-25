@@ -48,6 +48,11 @@ export function Dashboard({ data, routeTab }) {
 
   useEffect(() => { document.title = data.meta.title; }, [data]);
 
+  useEffect(() => {
+    if (data.meta.audioUrl) player.preload(data);
+    return () => player.stopPreload();
+  }, [data.meta.id]);
+
   const TabComponent = TAB_COMPONENTS[tab];
   const tabProps = tab === "overview" ? { data, metric, setMetric } : { data };
 

@@ -20,6 +20,7 @@ export function PlayerProvider({ children }) {
 
   const currentTimeRef = useRef(0);
   const topicsRef = useRef([]);
+  const episodeIdRef = useRef(null);
 
   const [state, setState] = useState({
     episodeId: null,
@@ -76,6 +77,23 @@ export function PlayerProvider({ children }) {
     };
   }, [audio]);
 
+  useEffect(() => { episodeIdRef.current = state.episodeId; }, [state.episodeId]);
+
+  const preload = useCallback((episodeData) => {
+    const { meta } = episodeData;
+    if (episodeIdRef.current) return;
+    if (audio.src && audio.src.endsWith(meta.audioUrl)) return;
+    audio.preload = "auto";
+    audio.src = meta.audioUrl;
+  }, [audio]);
+
+  const stopPreload = useCallback(() => {
+    if (episodeIdRef.current) return;
+    audio.preload = "metadata";
+    audio.removeAttribute("src");
+    audio.load();
+  }, [audio]);
+
   const play = useCallback((episodeData) => {
     const { meta, topics } = episodeData;
     topicsRef.current = topics || [];
@@ -85,16 +103,20 @@ export function PlayerProvider({ children }) {
       return;
     }
 
-    audio.src = meta.audioUrl;
+    const alreadyLoaded = audio.src && audio.src.endsWith(meta.audioUrl);
+    if (!alreadyLoaded) {
+      audio.src = meta.audioUrl;
+    }
+    audio.preload = "auto";
     audio.playbackRate = state.playbackRate;
     audio.play();
     setState((s) => ({
       ...s,
       episodeId: meta.id,
-      episodeMeta: { number: meta.number, title: meta.subtitle },
+      episodeMeta: { number: meta.number, title: meta.subtitle, durationMinutes: meta.durationMinutes },
       topics: topics || [],
       currentChapter: topics && topics.length > 0 ? topics[0] : null,
-      duration: 0,
+      duration: alreadyLoaded ? s.duration : 0,
     }));
   }, [audio, state.episodeId, state.playbackRate]);
 
@@ -144,6 +166,8 @@ export function PlayerProvider({ children }) {
     ...state,
     currentTimeRef,
     audio,
+    preload,
+    stopPreload,
     play,
     pause,
     togglePlay,
